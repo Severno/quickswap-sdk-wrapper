@@ -1,0 +1,21 @@
+{
+  "name": "sdk-wrapper",
+  "version": "1.0.0",
+  "description": "",
+  "target": "esnext",
+  "type": "commonjs",
+  "esModuleInterop": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^18.6.3",
+    "ethers": "^5.6.9",
+    "quickswap-sdk": "^3.0.9",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
