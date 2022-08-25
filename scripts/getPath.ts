@@ -1,5 +1,5 @@
 const quickswapSdk =  require('quickswap-sdk')
-const {ethers} = require('ethers')
+const {} = require('.')
 
 const {BigintIsh, ChainId, Currency, ETHER, Fetcher, JSBI, Pair, Percent, Token, TokenAmount, Trade, WETH} = quickswapSdk
 
@@ -226,13 +226,6 @@ const pairs = [[{"decimals":18,"chainId":137,"address":"0xa3Fa99A148fA48D14Ed51d
 //   {"liquidityToken":{"decimals":18,"symbol":"UNI-V2","name":"Uniswap V2","chainId":137,"address":"0x2EEAeC1544f356E41d9Eef17A373188386b34A56"},"tokenAmounts":[{"numerator":[981728289,1],"denominator":[660865024,931322574],"currency":{"decimals":18,"symbol":"GHST","name":"Aavegotchi GHST Token","chainId":137,"address":"0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7"},"token":{"decimals":18,"symbol":"GHST","name":"Aavegotchi GHST Token","chainId":137,"address":"0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7"}},{"numerator":[593590365,2],"denominator":[660865024,931322574],"currency":{"decimals":18,"symbol":"MAI","name":"miMATIC","chainId":137,"address":"0xa3Fa99A148fA48D14Ed51d610c367C61876997F1"},"token":{"decimals":18,"symbol":"MAI","name":"miMATIC","chainId":137,"address":"0xa3Fa99A148fA48D14Ed51d610c367C61876997F1"}}]}
 // ]
 
-const alchemy = 'https://polygon-mainnet.g.alchemy.com/v2/qteyaTH9FM30hxyZ1iPHbRLYCb7GG8pM'
-const provider = new ethers.providers.JsonRpcProvider(alchemy)
-
-async function getTokenData(tokenAddress: string) {
-  return await Fetcher.fetchTokenData(ChainId.MATIC, tokenAddress, provider)
-}
-
 const MAI_ADDRESS = '0xa3Fa99A148fA48D14Ed51d610c367C61876997F1'
 const ACRE_ADDRESS = '0x011734f6Ed20E8D011d85Cf7894814B897420acf'
 
@@ -265,7 +258,7 @@ function getPath (callback: (error: any, result: any) => void, pairs, tokenA, to
       maxNumResults: 1,
     })[0]?.route?.path ?? []
 
-    console.log('result', result)
+    // console.log('result', result)
 
     // callback(null, result)
   }
@@ -287,7 +280,7 @@ const run = async () => {
         new TokenAmount(current[0], '1000000000000000'),
         new TokenAmount(current[1], '1000000000000000'),
       )
-      console.log('current[0], current[1]', current[0], current[1])
+      // console.log('current[0], current[1]', current[0], current[1])
     }
 
 
