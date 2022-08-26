@@ -5,5 +5,8 @@ npm i
 ```
 ## Run
 ```
-tsc && node scripts/getPath.js
+tsc
+```
+```
+node dist/getPath.js 'tokenAAddress' 'tokenBAddress' 'amountTokenA'
 ```
