@@ -101,8 +101,8 @@ const getPath = async () => {
   bestPath.write(JSON.stringify(bestTradeExactInResult.route.path))
   slippage.write(JSON.stringify(bestTradeExactInResult.priceImpact.toFixed(2)))
   console.log('result', JSON.stringify(bestTradeExactInResult))
-  console.log('bestPath', JSON.stringify(bestTradeExactInResult))
-  console.log('slippage', JSON.stringify(bestTradeExactInResult))
+  console.log('bestPath', JSON.stringify(bestTradeExactInResult.route.path))
+  console.log('slippage', JSON.stringify(bestTradeExactInResult.priceImpact.toFixed(2)))
 }
 
 getPath()
