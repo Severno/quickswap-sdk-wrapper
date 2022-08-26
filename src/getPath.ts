@@ -1,4 +1,4 @@
-import {ChainId, Fetcher, Pair, Token, TokenAmount, Trade} from "quickswap-sdk";
+import {ChainId, Fetcher, Pair, TokenAmount, Trade} from "quickswap-sdk";
 import {provider} from "./provider";
 import {basePairs, bases, GlobalData} from "./constants";
 
@@ -76,53 +76,33 @@ const getPairs = async (pairs, tokenAmount) => {
   }, Promise.resolve([]))
 }
 
-const MAI_ADDRESS = '0xa3Fa99A148fA48D14Ed51d610c367C61876997F1'
-const AAVE_ADDRESS = '0xd6df932a45c0f255f85145f286ea0b292b21c90b'
-const ETH_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
-const DAI_ADDRESS = '0x8F3CF7AD23CD3CADBD9735AFF958023239C6A063'
-const USDC_ADDRESS = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
-const ACRE_ADDRESS = '0x011734f6Ed20E8D011d85Cf7894814B897420acf'
-
-async function bestTradeExactIn(pairs, tokenA, tokenB, tokenAToSell) {
+async function bestTradeExactIn(pairs, tokenA, tokenB, tokenAToSell): Promise<Trade> {
   const newPairs = await getPairs(pairs, tokenAToSell)
 
   return Trade.bestTradeExactIn(newPairs, new TokenAmount(tokenA, tokenAToSell), tokenB, {
     maxHops: 3,
     maxNumResults: 1,
-  })[0] ?? []
+  })[0]
 }
 
-const file = fs.createWriteStream('getPathResult.txt');
+const result = fs.createWriteStream('result.json');
+const bestPath = fs.createWriteStream('bestPath.json');
+const slippage = fs.createWriteStream('slippage.json');
 
 const getPath = async () => {
-  const [tokenARaw, tokenBRaw, tokenAMount] = args
+  const [tokenAAddress, tokenBAddress, tokenAMount] = args
 
-  const tokenAData = JSON.parse(tokenARaw)
-  const tokenBData = JSON.parse(tokenBRaw)
-
-  const tokenA = new Token(tokenAData.chainId, tokenAData.address, tokenAData.decimals, tokenAData.symbol, tokenAData.name)
-  const tokenB = new Token(tokenBData.chainId, tokenBData.address, tokenBData.decimals, tokenBData.symbol, tokenBData.name)
+  const tokenA = await getTokenData(tokenAAddress)
+  const tokenB = await getTokenData(tokenBAddress)
 
   const bestTradeExactInResult = await bestTradeExactIn(getPairsCombinations(tokenA, tokenB), tokenA, tokenB, tokenAMount)
 
-  file.write(JSON.stringify(bestTradeExactInResult))
-  console.log('ppp', JSON.stringify(bestTradeExactInResult))
+  result.write(JSON.stringify(bestTradeExactInResult))
+  bestPath.write(JSON.stringify(bestTradeExactInResult.route.path))
+  slippage.write(JSON.stringify(bestTradeExactInResult.priceImpact.toFixed(2)))
+  console.log('result', JSON.stringify(bestTradeExactInResult))
+  console.log('bestPath', JSON.stringify(bestTradeExactInResult))
+  console.log('slippage', JSON.stringify(bestTradeExactInResult))
 }
 
 getPath()
-
-const tokenA = {
-  decimals: 18,
-  symbol: 'WMATIC',
-  name: 'Wrapped Matic',
-  chainId: 137,
-  address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-}
-
-const tokenB = {
-  decimals: 18,
-  symbol: 'QUICK(OLD)',
-  name: 'Quickswap(OLD)',
-  chainId: 137,
-  address: '0x831753DD7087CaC61aB5644b308642cc1c33Dc13',
-}
